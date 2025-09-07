@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -53,10 +53,6 @@ export default function StudyTrackingPage() {
     fetchChapters();
   }, []);
 
-  useEffect(() => {
-    calculateTodayStats();
-  }, [sessions]);
-
   const fetchStudySessions = async () => {
     try {
       const response = await fetch('/api/study-sessions');
@@ -83,7 +79,7 @@ export default function StudyTrackingPage() {
     }
   };
 
-  const calculateTodayStats = () => {
+  const calculateTodayStats = useCallback(() => {
     const today = format(new Date(), 'yyyy-MM-dd');
     const todaySessions = sessions.filter(session => 
       session.date === today
@@ -96,7 +92,11 @@ export default function StudyTrackingPage() {
     };
 
     setTodayStats(stats);
-  };
+  }, [sessions]);
+
+  useEffect(() => {
+    calculateTodayStats();
+  }, [calculateTodayStats]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -183,7 +183,7 @@ export default function StudyTrackingPage() {
             <div className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-blue-600" />
               <div>
-                <p className="text-sm text-gray-500">Today's Study Time</p>
+                <p className="text-sm text-gray-500">Today&apos;s Study Time</p>
                 <p className="text-2xl font-bold">{formatTime(todayStats.totalTime)}</p>
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function StudyTrackingPage() {
       {/* Weekly Summary */}
       <Card>
         <CardHeader>
-          <CardTitle>This Week's Progress</CardTitle>
+          <CardTitle>This Week&apos;s Progress</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">

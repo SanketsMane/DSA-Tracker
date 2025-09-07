@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -64,12 +64,7 @@ export default function ProblemsPage() {
     status: 'Not Started'
   });
 
-  useEffect(() => {
-    fetchProblems();
-    fetchChapters();
-  }, [filterChapter, filterDifficulty, filterStatus]);
-
-  const fetchProblems = async () => {
+  const fetchProblems = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
@@ -91,7 +86,7 @@ export default function ProblemsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterChapter, filterDifficulty, filterStatus, searchTerm]);
 
   const fetchChapters = async () => {
     try {
@@ -208,6 +203,11 @@ export default function ProblemsPage() {
     e.preventDefault();
     fetchProblems();
   };
+
+  useEffect(() => {
+    fetchProblems();
+    fetchChapters();
+  }, [fetchProblems]);
 
   return (
     <div className="space-y-4 md:space-y-6">

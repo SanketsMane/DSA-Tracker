@@ -8,7 +8,7 @@ import { User } from '@/models/User'
 // GET /api/chapters/[id] - Get specific chapter
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -23,7 +23,8 @@ export async function GET(
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    const chapter = await Chapter.findOne({ _id: params.id, userId: user._id })
+    const resolvedParams = await params
+    const chapter = await Chapter.findOne({ _id: resolvedParams.id, userId: user._id })
       .populate('prerequisites', 'title')
 
     if (!chapter) {
@@ -40,7 +41,7 @@ export async function GET(
 // PUT /api/chapters/[id] - Update chapter
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -56,9 +57,10 @@ export async function PUT(
     }
 
     const body = await request.json()
+    const resolvedParams = await params
     
     const chapter = await Chapter.findOneAndUpdate(
-      { _id: params.id, userId: user._id },
+      { _id: resolvedParams.id, userId: user._id },
       body,
       { new: true, runValidators: true }
     ).populate('prerequisites', 'title')
@@ -77,7 +79,7 @@ export async function PUT(
 // DELETE /api/chapters/[id] - Delete chapter
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -92,7 +94,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    const chapter = await Chapter.findOneAndDelete({ _id: params.id, userId: user._id })
+    const resolvedParams = await params
+    const chapter = await Chapter.findOneAndDelete({ _id: resolvedParams.id, userId: user._id })
 
     if (!chapter) {
       return NextResponse.json({ error: 'Chapter not found' }, { status: 404 })

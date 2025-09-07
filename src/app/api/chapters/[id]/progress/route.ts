@@ -9,7 +9,7 @@ import UserPreferences from '@/models/UserPreferences'
 // PUT /api/chapters/[id]/progress - Update chapter progress
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -26,8 +26,9 @@ export async function PUT(
 
     const body = await request.json()
     const { topicIndex, isCompleted, completedProblems } = body
+    const resolvedParams = await params
 
-    const chapter = await Chapter.findOne({ _id: params.id, userId: user._id })
+    const chapter = await Chapter.findOne({ _id: resolvedParams.id, userId: user._id })
     if (!chapter) {
       return NextResponse.json({ error: 'Chapter not found' }, { status: 404 })
     }

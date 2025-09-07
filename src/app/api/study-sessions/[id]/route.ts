@@ -23,7 +23,7 @@ const StudySession = mongoose.models.StudySession || mongoose.model('StudySessio
 // DELETE /api/study-sessions/[id] - Delete specific study session
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -31,7 +31,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const resolvedParams = await params
+    const { id } = resolvedParams
 
     if (!id) {
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 })
@@ -63,7 +64,7 @@ export async function DELETE(
 // GET /api/study-sessions/[id] - Get specific study session
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -71,7 +72,8 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const resolvedParams = await params
+    const { id } = resolvedParams
 
     if (!id) {
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 })
@@ -103,7 +105,7 @@ export async function GET(
 // PUT /api/study-sessions/[id] - Update specific study session
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -111,7 +113,8 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const resolvedParams = await params
+    const { id } = resolvedParams
 
     if (!id) {
       return NextResponse.json({ error: 'Session ID is required' }, { status: 400 })

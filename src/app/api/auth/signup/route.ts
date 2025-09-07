@@ -5,9 +5,12 @@ import { User } from '@/models/User'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Signup request started')
     const { name, email, password } = await request.json()
+    console.log('Received data:', { name, email, passwordLength: password?.length })
 
     if (!name || !email || !password) {
+      console.log('Missing required fields')
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -15,17 +18,22 @@ export async function POST(request: NextRequest) {
     }
 
     if (password.length < 6) {
+      console.log('Password too short')
       return NextResponse.json(
         { error: 'Password must be at least 6 characters long' },
         { status: 400 }
       )
     }
 
+    console.log('Connecting to database...')
     await dbConnect()
+    console.log('Database connected')
 
     // Check if user already exists
+    console.log('Checking for existing user...')
     const existingUser = await User.findOne({ email })
     if (existingUser) {
+      console.log('User already exists')
       return NextResponse.json(
         { error: 'User already exists' },
         { status: 400 }
@@ -33,9 +41,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Hash password
+    console.log('Hashing password...')
     const hashedPassword = await bcrypt.hash(password, 12)
 
     // Create user
+    console.log('Creating user...')
     const user = await User.create({
       name,
       email,
@@ -50,6 +60,7 @@ export async function POST(request: NextRequest) {
         }
       }
     })
+    console.log('User created successfully')
 
     // Remove password from response
     const { passwordHash, ...userWithoutPassword } = user.toObject()
@@ -63,8 +74,12 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error('Signup error:', error)
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     )
   }

@@ -22,7 +22,7 @@ import {
   Calendar,
   Link
 } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 interface Topic {
   name: string
@@ -292,6 +292,9 @@ export default function ChaptersPage() {
               <DialogTitle>
                 {editingChapter ? 'Edit Chapter' : 'Create New Chapter'}
               </DialogTitle>
+              <DialogDescription>
+                {editingChapter ? 'Update the chapter details and organize your topics.' : 'Create a new study chapter with topics and learning objectives.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Info */}

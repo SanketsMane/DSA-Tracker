@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Calendar, Plus, Edit2, Trash2, CheckCircle, Clock } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 interface Task {
   _id: string
@@ -165,6 +165,9 @@ export default function SchedulePage() {
               <DialogTitle>
                 {editingSchedule ? 'Edit Schedule' : 'Add New Schedule'}
               </DialogTitle>
+              <DialogDescription>
+                {editingSchedule ? 'Update your study schedule details.' : 'Create a new study schedule for your learning plan.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

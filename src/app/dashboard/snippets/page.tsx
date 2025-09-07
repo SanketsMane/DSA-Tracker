@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Code, Plus, Edit2, Trash2, Copy, Search, Filter } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 interface CodeSnippet {
   _id: string
@@ -186,6 +186,9 @@ export default function SnippetsPage() {
               <DialogTitle>
                 {editingSnippet ? 'Edit Snippet' : 'Add New Snippet'}
               </DialogTitle>
+              <DialogDescription>
+                {editingSnippet ? 'Update your code snippet details.' : 'Add a new code snippet to your collection.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

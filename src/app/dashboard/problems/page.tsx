@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, Plus, Code, Edit2, Trash2, Link, Clock } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 interface Chapter {
   _id: string;
@@ -233,6 +233,9 @@ export default function ProblemsPage() {
               <DialogTitle>
                 {editingProblem ? 'Edit Problem' : 'Add New Problem'}
               </DialogTitle>
+              <DialogDescription>
+                {editingProblem ? 'Update the problem details below.' : 'Fill in the details to add a new coding problem to your tracker.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Target, Plus, Edit2, Trash2, CheckCircle, Clock, Calendar, TrendingUp } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
 interface Goal {
   _id: string
@@ -229,6 +229,9 @@ export default function GoalsPage() {
               <DialogTitle>
                 {editingGoal ? 'Edit Goal' : 'Create New Goal'}
               </DialogTitle>
+              <DialogDescription>
+                {editingGoal ? 'Update your goal details and progress.' : 'Set a new learning goal to track your progress.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
